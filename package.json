@@ -1,0 +1,26 @@
+{
+  "name": "label-landing-monorepo",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "build:craft-anything": "pnpm --filter craft-anything build",
+    "build:design-i-ship": "pnpm --filter design-i-ship build",
+    "build:otherlight": "pnpm --filter otherlight build",
+    "build:studio": "pnpm --filter studio build",
+    "build:swiss": "pnpm --filter swiss build",
+    "dev:craft-anything": "pnpm --filter craft-anything dev",
+    "dev:design-i-ship": "pnpm --filter design-i-ship dev",
+    "dev:otherlight": "pnpm --filter otherlight dev",
+    "dev:studio": "pnpm --filter studio dev",
+    "dev:swiss": "pnpm --filter swiss dev"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.4",
+    "tailwindcss": "^4.3.4",
+    "turbo": "^2.3.0"
+  },
+  "packageManager": "pnpm@12.16.1"
+}

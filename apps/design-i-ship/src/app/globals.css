@@ -1,0 +1,418 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Palette — Technical Brutalism */
+  --color-onyx: #101014;
+  --color-ink: #f2f1ee;
+  --color-ship: #6b9eff;
+  --color-mute: #85858d;
+  --color-hull: #929298;
+  --color-line: rgba(242, 241, 238, 0.16);
+
+  /* Type */
+  --font-display: var(--font-archivo);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+
+  --ease-technical: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------------------------------------------------------------
+   Base
+   --------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-onyx);
+  color: var(--color-ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+section[id] {
+  scroll-margin-top: 74px;
+}
+
+::selection {
+  background: var(--color-ship);
+  color: var(--color-onyx);
+}
+
+/* ---------------------------------------------------------------
+   72px blueprint grid
+   --------------------------------------------------------------- */
+.grid-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: linear-gradient(to right, rgba(242, 241, 238, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(242, 241, 238, 0.045) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+/* ---------------------------------------------------------------
+   Technical labels — Geist Mono, 11px, uppercase, wide tracking
+   --------------------------------------------------------------- */
+.mono-label {
+  font-family: var(--font-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* Mono badge — sharp corners, blue on onyx */
+.badge {
+  display: inline-block;
+  font-family: var(--font-mono), ui-monospace, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-onyx);
+  background: var(--color-ship);
+  padding: 0.75rem 0.5rem;
+  border-radius: 0;
+}
+
+/* Technical links — Geist Mono 11px uppercase */
+.link-technical {
+  font-family: var(--font-mono), ui-monospace, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-hull);
+  transition: color 0.2s ease;
+}
+
+.link-technical:hover {
+  color: var(--color-ink);
+}
+
+/* Buttons */
+.btn-primary,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-mono), ui-monospace, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  padding: 1rem 1.75rem;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--color-ship);
+  color: var(--color-onyx);
+  border: 1px solid var(--color-ship);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #8fb4ff;
+  border-color: #8fb4ff;
+}
+
+.btn-ghost {
+  color: var(--color-ink);
+  border: 1px solid rgba(242, 241, 238, 0.35);
+  background: transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-ship);
+  color: var(--color-ship);
+}
+
+/* ---------------------------------------------------------------
+   Bento card — hover: blue border, 4% blue tint, -3px lift
+   --------------------------------------------------------------- */
+.card {
+  border: 1px solid transparent;
+  transition: background-color 0.3s var(--ease-technical), border-color 0.3s var(--ease-technical),
+    transform 0.3s var(--ease-technical);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-ship);
+  background-color: rgba(107, 158, 255, 0.04);
+}
+
+/* ---------------------------------------------------------------
+   The Ruler — fixed scroll rail with giant section titles
+   --------------------------------------------------------------- */
+.ruler {
+  position: fixed;
+  top: 74px;
+  bottom: 0;
+  right: 0;
+  z-index: 50;
+  width: 60px;
+  border-left: 1px solid var(--color-line);
+  background: var(--color-onyx);
+  pointer-events: none;
+}
+
+.ruler-tick {
+  position: absolute;
+  right: 0;
+  height: 1px;
+  background: rgba(242, 241, 238, 0.18);
+}
+
+.ruler-tick.major {
+  width: 28px;
+  background: rgba(242, 241, 238, 0.3);
+}
+
+.ruler-tick.minor {
+  width: 14px;
+}
+
+.ruler-num {
+  position: absolute;
+  right: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono), ui-monospace, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--color-mute);
+}
+
+/* Glowing horizontal scroll marker + zero-padded percentage readout */
+.ruler-marker {
+  position: absolute;
+  top: 0;
+  right: 14px;
+  width: 40px;
+  height: 2px;
+  background: var(--color-ship);
+  box-shadow: 0 0 12px 3px rgba(107, 158, 255, 0.7);
+  transform: translateY(-50%);
+}
+
+.ruler-pct {
+  position: absolute;
+  top: 12px;
+  right: 22px;
+  font-family: var(--font-mono), ui-monospace, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--color-ship);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Giant title stack + vertical "up next" + rail menu — desktop only */
+.ruler-title-stack,
+.ruler-next,
+.ruler-menu {
+  display: none;
+}
+
+.changing {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.is-hidden {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+
+@media (min-width: 64rem) {
+  .ruler {
+    width: 120px;
+  }
+
+  .ruler-marker {
+    right: 30px;
+    width: 52px;
+  }
+
+  .ruler-pct {
+    right: 30px;
+  }
+
+  .ruler-title-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    position: absolute;
+    top: 12px;
+    right: 76px;
+    z-index: 10;
+  }
+
+  .ruler-title-stack a {
+    pointer-events: auto;
+    white-space: nowrap;
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--color-ink);
+    font-size: clamp(2.25rem, 3.4vw, 3.5rem);
+    transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
+  }
+
+  .ruler-title-stack a:hover {
+    color: var(--color-ship);
+  }
+
+  /* Passed titles recede above the current one, which anchors at the bottom */
+  .ruler-title-stack a:not(:last-child) {
+    color: rgba(242, 241, 238, 0.28);
+    font-size: clamp(1.6rem, 2.4vw, 2.5rem);
+  }
+
+  .ruler-title-stack a:not(:last-child):hover {
+    color: var(--color-ink);
+  }
+
+  /* Giant vertical up-next word */
+  .ruler-next {
+    display: block;
+    position: absolute;
+    bottom: 112px;
+    right: 30px;
+    writing-mode: vertical-rl;
+    white-space: nowrap;
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--color-mute);
+    font-size: clamp(2rem, 3vw, 3rem);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .ruler-menu {
+    display: flex;
+    position: fixed;
+    bottom: 24px;
+    right: 112px;
+    z-index: 60;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .ruler-menu a {
+    font-family: var(--font-mono), ui-monospace, Menlo, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-hull);
+    transition: color 0.2s ease, opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .ruler-menu a:hover {
+    color: var(--color-ink);
+  }
+}
+
+/* ---------------------------------------------------------------
+   Corner crosshair ticks (choreo decoration)
+   11×11 plus sign, centered on the corner point of the top rule
+   --------------------------------------------------------------- */
+.tick {
+  pointer-events: none;
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  z-index: 1;
+}
+
+.tick::before,
+.tick::after {
+  content: "";
+  background: rgba(242, 241, 238, 0.36);
+  position: absolute;
+}
+
+.tick::before {
+  width: 1px;
+  top: 0;
+  bottom: 0;
+  left: 5px;
+}
+
+.tick::after {
+  height: 1px;
+  top: 5px;
+  left: 0;
+  right: 0;
+}
+
+/* Stack marquee — seamless 28s loop; two identical groups make -50% seamless */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Scroll-hint arrow bob */
+@keyframes hint-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+.hint-bob {
+  animation: hint-bob 1.6s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------------
+   Reduced motion
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .card {
+    transition: none;
+  }
+  .hint-bob {
+    animation: none;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  .ruler-title-stack a,
+  .ruler-next,
+  .ruler-menu a {
+    transition: none;
+  }
+}

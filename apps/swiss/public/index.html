@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KERN° — Swiss Design Practice</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --bg:#f2f2f2;
+  --ink:#111111;
+  --mute:#838282;
+  --soft:#b6b5b5;
+  --g1:#bfbfbf;
+  --g2:#c9c9c9;
+  --g3:#d1d1d1;
+  --g4:#d9d9d9;
+  --dark:#1e1e1e;
+  --paper:#f6f6f6;
+
+  --display:'Clash Display','ClashDisplay','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --body:'Satoshi','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --serif:'Instrument Serif','Times New Roman',Times,serif;
+
+  --ease:cubic-bezier(0.77, 0, 0.175, 1);
+  --hair:1px solid rgba(30,30,30,.1);
+  --gut:clamp(20px, 4vw, 56px);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+/* scroll mượt bằng JS (xem script); overflow-anchor:none tránh scroll anchoring dịch vị trí khi nội dung phía trên đổi trạng thái */
+html{-webkit-text-size-adjust:100%;overflow-anchor:none;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--body);
+  font-weight:500;
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
+h1,h2,h3,h4{
+  font-family:var(--display);
+  font-weight:700;
+  letter-spacing:-.05em;
+  line-height:.9;
+  text-transform:none;
+}
+::selection{background:var(--ink);color:var(--bg);}
+
+.wrap{max-width:1560px;margin:0 auto;padding-inline:var(--gut);}
+.rule{height:1px;background:rgba(30,30,30,.1);border:0;}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header{
+  position:sticky;top:0;z-index:100;
+  height:80px;
+  display:flex;align-items:center;
+  background:rgba(242,242,242,.9);
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+  border-bottom:var(--hair);
+}
+.site-header .wrap{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.brand{
+  font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.05em;
+  line-height:1;
+}
+.brand sup{font-size:.5em;letter-spacing:0;top:-.9em;position:relative;}
+.nav{display:flex;align-items:center;gap:34px;}
+.nav-links{display:flex;align-items:center;gap:30px;list-style:none;}
+.nav-links a{
+  font-family:var(--body);font-size:14px;font-weight:500;text-transform:uppercase;
+  letter-spacing:.02em;color:var(--ink);
+  transition:color 120ms ease;
+}
+.nav-links a:hover{color:var(--soft);}
+.btn-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  height:42px;padding:0 22px;border-radius:999px;
+  border:1px solid var(--ink);
+  font-size:14px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;
+  transition:background-color 260ms var(--ease),color 260ms var(--ease);
+}
+.btn-pill:hover{background:var(--ink);color:var(--bg);}
+
+/* ============================================================
+   HERO — ECHO STACK
+   ============================================================ */
+.hero{
+  position:relative;
+  height:100vh;min-height:70vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:120px 0 96px;
+  text-align:center;
+}
+.echo{
+  position:relative;display:inline-block;
+  padding-left:.2em;
+}
+.echo-layer{
+  display:block;
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(64px,11vw,180px);
+  letter-spacing:-.05em;line-height:.9;
+  white-space:nowrap;
+}
+.echo-layer.is-bg{position:absolute;pointer-events:none;user-select:none;}
+.echo-layer.l1{left:-.04em;top:-.04em;color:var(--g1);}
+.echo-layer.l2{left:-.08em;top:-.08em;color:var(--g2);}
+.echo-layer.l3{left:-.12em;top:-.12em;color:var(--g3);}
+.echo-layer.l4{left:-.16em;top:-.16em;color:var(--g4);}
+.echo-layer.is-fg{position:relative;color:var(--ink);z-index:2;}
+.hero-meta{
+  position:absolute;left:var(--gut);right:var(--gut);bottom:36px;
+  display:flex;justify-content:space-between;gap:20px;
+  font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--mute);
+}
+.hero-meta span:nth-child(2){text-align:center;}
+.hero-meta span:last-child{text-align:right;}
+
+/* ============================================================
+   PHILOSOPHY / NARRATIVE
+   ============================================================ */
+.philosophy{
+  position:relative;
+  padding:clamp(96px,14vh,180px) 0 clamp(72px,10vh,140px);
+}
+.divider{
+  width:1px;height:clamp(56px,9vh,110px);
+  background:rgba(30,30,30,.1);
+  margin:0 auto clamp(48px,7vh,84px);
+}
+.quote{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(36px,5.2vw,76px);
+  letter-spacing:-.05em;line-height:.98;
+  text-align:center;max-width:20ch;margin:0 auto;
+}
+.quote em{
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  letter-spacing:-.01em;line-height:1;
+}
+.pillars{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:32px;
+  margin-top:clamp(64px,9vh,110px);
+}
+.pillar h3{
+  font-size:clamp(22px,2vw,28px);margin-bottom:14px;
+  padding-top:20px;border-top:var(--hair);
+}
+.pillar p{font-size:15px;font-weight:400;color:var(--mute);max-width:34ch;}
+
+/* ============================================================
+   SHOWCASE — ASYMMETRICAL 12 COL GRID
+   ============================================================ */
+.showcase{padding:clamp(48px,8vh,90px) 0 clamp(96px,14vh,180px);}
+.sec-head{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:32px;
+  padding-bottom:28px;margin-bottom:48px;border-bottom:var(--hair);
+}
+.sec-head h2{font-size:clamp(32px,4.6vw,68px);}
+.sec-head .kicker{
+  font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--mute);
+}
+.grid{
+  display:grid;grid-template-columns:repeat(12,1fr);gap:24px;
+}
+.shot{
+  position:relative;overflow:hidden;background:var(--g3);
+}
+/* lớp reveal nằm riêng: nếu clip-path nằm trên chính phần tử bị observe,
+   vùng giao = 0 và IntersectionObserver không bao giờ kích hoạt */
+.shot-in{
+  position:absolute;inset:0;
+  clip-path:inset(0 0 0 0);
+  transition:clip-path 700ms var(--ease);
+}
+.js .shot-in{clip-path:inset(0 0 100% 0);}
+.js .shot.in .shot-in{clip-path:inset(0 0 0 0);}
+.shot .art{
+  width:100%;height:100%;object-fit:cover;
+  filter:grayscale(20%);
+  transition:filter 700ms var(--ease),transform 700ms var(--ease);
+}
+.shot:hover .art{filter:grayscale(0%);transform:scale(1.05);}
+.shot figcaption{
+  position:absolute;left:0;right:0;bottom:0;z-index:3;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+  padding:18px 20px;
+  background:linear-gradient(to top,rgba(17,17,17,.42),rgba(17,17,17,0));
+  color:var(--paper);
+}
+.shot figcaption .t{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.04em;line-height:1;}
+.shot figcaption .m{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;opacity:.75;white-space:nowrap;}
+
+/* variants */
+.shot-a{grid-column:span 8;aspect-ratio:16/10;border-radius:4px;}
+.shot-b{grid-column:span 4;height:500px;border-radius:9999px;}
+.shot-c{grid-column:span 5;aspect-ratio:1/1;border-radius:50%;}
+.shot-d{grid-column:span 7;aspect-ratio:16/9;border-radius:4px;}
+
+/* circular overlay on the pill card */
+.pill-overlay{
+  position:absolute;inset:0;z-index:3;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.pill-overlay span{
+  width:132px;height:132px;border-radius:50%;
+  border:1px solid rgba(246,246,246,.75);
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:0 16px;
+  color:var(--paper);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
+  background:rgba(17,17,17,.18);
+  opacity:0;transform:scale(.86);
+  transition:opacity 700ms var(--ease),transform 700ms var(--ease);
+}
+.shot-b:hover .pill-overlay span{opacity:1;transform:scale(1);}
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+.services{padding:0 0 clamp(96px,14vh,180px);}
+.cards{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+}
+.card{
+  border:var(--hair);
+  background:transparent;
+  padding:40px 36px 36px;
+  display:flex;flex-direction:column;min-height:320px;
+  transition:background-color 700ms var(--ease);
+}
+.card:hover{background:#ffffff;}
+.icon-box{
+  width:64px;height:64px;border:var(--hair);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform 700ms var(--ease);
+}
+.card:hover .icon-box{transform:rotate(12deg);}
+.icon-box svg{width:28px;height:28px;}
+.card h3{font-size:clamp(22px,1.9vw,26px);margin:32px 0 12px;}
+.card p{font-size:15px;font-weight:400;color:var(--mute);max-width:32ch;}
+.card .cta{
+  margin-top:auto;padding-top:32px;
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;
+}
+.card .cta svg{width:16px;height:16px;transition:transform 700ms var(--ease);}
+.card:hover .cta svg{transform:translateX(6px);}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer{
+  background:var(--dark);
+  color:rgba(246,246,246,.6);
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:clamp(56px,8vh,90px) 0 32px;
+}
+.f-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1.3fr;gap:40px;
+}
+.site-footer h4{
+  font-family:var(--body);font-weight:700;font-size:12px;
+  text-transform:uppercase;letter-spacing:.14em;
+  color:var(--paper);margin-bottom:20px;
+}
+.site-footer ul{list-style:none;display:flex;flex-direction:column;gap:12px;}
+.site-footer a{font-size:14px;font-weight:400;transition:color 120ms ease;}
+.site-footer a:hover{color:var(--paper);}
+.f-brand .mark{
+  font-family:var(--display);font-weight:700;font-size:28px;letter-spacing:-.05em;
+  color:var(--paper);margin-bottom:16px;
+}
+.f-brand p{font-size:14px;font-weight:400;max-width:36ch;}
+.f-contact ul{gap:16px;}
+.f-contact li{display:flex;align-items:flex-start;gap:10px;font-size:14px;font-weight:400;}
+.f-contact svg{width:16px;height:16px;flex:none;margin-top:3px;color:var(--paper);}
+.f-bottom{
+  margin-top:clamp(48px,7vh,80px);padding-top:24px;
+  border-top:1px solid rgba(255,255,255,.05);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  font-size:12px;font-weight:400;
+}
+
+/* ============================================================
+   REVEAL
+   ============================================================ */
+.js .reveal{opacity:0;transform:translateY(18px);transition:opacity 700ms var(--ease),transform 700ms var(--ease);}
+.js .reveal.in{opacity:1;transform:none;}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1024px){
+  .pillars{grid-template-columns:1fr;gap:40px;}
+  .cards{grid-template-columns:1fr;}
+  .f-grid{grid-template-columns:1fr 1fr;}
+  .shot-a,.shot-d{grid-column:span 12;}
+  .shot-b{grid-column:span 6;height:440px;}
+  .shot-c{grid-column:span 6;}
+}
+@media (max-width:720px){
+  .site-header{height:64px;}
+  .nav-links{display:none;}
+  .hero{height:auto;min-height:0;padding:120px 0 110px;}
+  .hero-meta{position:static;margin-top:56px;flex-direction:column;gap:8px;text-align:left;}
+  .hero-meta span:nth-child(2),.hero-meta span:last-child{text-align:left;}
+  .shot-b,.shot-c{grid-column:span 12;}
+  .shot-b{height:520px;}
+  .f-grid{grid-template-columns:1fr;}
+  .sec-head{flex-direction:column;align-items:flex-start;gap:10px;}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top">KERN<sup>°</sup></a>
+    <nav class="nav" aria-label="Primary">
+      <ul class="nav-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#philosophy">Studio</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a class="btn-pill" href="#contact">Start a project</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap">
+    <h1 class="echo">
+      <span class="echo-layer is-bg l4" aria-hidden="true">KERN</span>
+      <span class="echo-layer is-bg l3" aria-hidden="true">KERN</span>
+      <span class="echo-layer is-bg l2" aria-hidden="true">KERN</span>
+      <span class="echo-layer is-bg l1" aria-hidden="true">KERN</span>
+      <span class="echo-layer is-fg">KERN</span>
+    </h1>
+  </div>
+  <div class="hero-meta">
+    <span>Swiss design practice</span>
+    <span>Zürich — Tokyo</span>
+    <span>Est. 2016 / Index 01</span>
+  </div>
+</section>
+
+<!-- ================= PHILOSOPHY ================= -->
+<section class="philosophy" id="philosophy">
+  <div class="wrap">
+    <div class="divider" aria-hidden="true"></div>
+    <p class="quote reveal">We build identity from <em>structure</em>, not from decoration.</p>
+    <div class="pillars">
+      <div class="pillar reveal">
+        <h3>Structure</h3>
+        <p>Every decision starts in the grid — a hierarchy of size, weight and interval that holds up under pressure, at any scale.</p>
+      </div>
+      <div class="pillar reveal">
+        <h3>Signal</h3>
+        <p>Typography is the message. We strip ornament until the hierarchy alone carries the argument and nothing else competes.</p>
+      </div>
+      <div class="pillar reveal">
+        <h3>Surfaces</h3>
+        <p>Identity, print and interface share one grammar: measured, quiet and exacting, so the work reads the same in every medium.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SHOWCASE ================= -->
+<section class="showcase" id="work">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Selected<br>Work</h2>
+      <span class="kicker">Four projects / 2024—2026</span>
+    </div>
+
+    <div class="grid">
+      <figure class="shot shot-a">
+        <div class="shot-in">
+          <svg class="art" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Meridian identity composition">
+            <defs>
+              <linearGradient id="aBg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#EAE1D2"/><stop offset="1" stop-color="#C6B9A2"/>
+              </linearGradient>
+            </defs>
+            <rect width="800" height="500" fill="url(#aBg)"/>
+            <circle cx="292" cy="248" r="152" fill="#B4553F"/>
+            <rect x="428" y="86" width="244" height="328" fill="#2C4F52"/>
+            <rect x="428" y="334" width="244" height="80" fill="#D9A441"/>
+            <circle cx="292" cy="248" r="58" fill="#EDE6D8"/>
+            <rect x="86" y="86" width="120" height="8" fill="#111111" opacity=".55"/>
+          </svg>
+          <figcaption><span class="t">Meridian</span><span class="m">Identity system</span></figcaption>
+        </div>
+      </figure>
+
+      <figure class="shot shot-b">
+        <div class="shot-in">
+          <svg class="art" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Fold editorial composition">
+            <rect width="400" height="800" fill="#2B2B2B"/>
+            <rect x="0" y="0" width="400" height="250" fill="#D9A441"/>
+            <path d="M0 250 L400 120 L400 400 L0 530 Z" fill="#B4553F"/>
+            <circle cx="200" cy="610" r="112" fill="#E8DFD1"/>
+            <rect x="120" y="560" width="160" height="6" fill="#111111" opacity=".45"/>
+          </svg>
+          <div class="pill-overlay"><span>View<br>project</span></div>
+          <figcaption><span class="t">Fold</span><span class="m">Editorial</span></figcaption>
+        </div>
+      </figure>
+
+      <figure class="shot shot-c">
+        <div class="shot-in">
+          <svg class="art" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Anvil type specimen composition">
+            <rect width="600" height="600" fill="#E8DFD1"/>
+            <circle cx="300" cy="300" r="218" fill="none" stroke="#111111" stroke-width="2"/>
+            <circle cx="300" cy="300" r="140" fill="#2C4F52"/>
+            <circle cx="300" cy="300" r="58" fill="#D9A441"/>
+            <rect x="0" y="291" width="600" height="18" fill="#B4553F"/>
+          </svg>
+          <figcaption><span class="t">Anvil</span><span class="m">Type specimen</span></figcaption>
+        </div>
+      </figure>
+
+      <figure class="shot shot-d">
+        <div class="shot-in">
+          <svg class="art" viewBox="0 0 900 480" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Halide art direction composition">
+            <defs>
+              <linearGradient id="dBg" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#2C4F52"/><stop offset="1" stop-color="#B4553F"/>
+              </linearGradient>
+            </defs>
+            <rect width="900" height="480" fill="url(#dBg)"/>
+            <rect x="118" y="118" width="300" height="244" fill="#E8DFD1"/>
+            <circle cx="640" cy="240" r="112" fill="#D9A441"/>
+            <rect x="0" y="424" width="900" height="56" fill="#111111" opacity=".85"/>
+          </svg>
+          <figcaption><span class="t">Halide</span><span class="m">Art direction</span></figcaption>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Bespoke<br>Services</h2>
+      <span class="kicker">Three disciplines / One system</span>
+    </div>
+
+    <div class="cards">
+      <article class="card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.4"><rect x="3.5" y="3.5" width="17" height="17"/><circle cx="12" cy="12" r="4.5"/></svg>
+        </div>
+        <h3>Brand Systems</h3>
+        <p>Naming, identity, wordmark and the guidelines that keep a brand coherent as the organisation grows around it.</p>
+        <a class="cta" href="#contact">Explore
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg>
+        </a>
+      </article>
+
+      <article class="card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.4"><path d="M4 4h7v16H4z"/><path d="M13 4h7v16h-7z"/><path d="M7 9h1M7 13h1M16 9h1M16 13h1"/></svg>
+        </div>
+        <h3>Editorial Design</h3>
+        <p>Books, journals and catalogues built on a measured grid — long-form typography with a real reading rhythm.</p>
+        <a class="cta" href="#contact">Explore
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg>
+        </a>
+      </article>
+
+      <article class="card reveal">
+        <div class="icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.4"><path d="M3.5 12.5l8-8 9 9-8 8z"/><path d="M9 16h6"/></svg>
+        </div>
+        <h3>Digital Interfaces</h3>
+        <p>Websites and product surfaces where type, spacing and motion carry the same discipline as print.</p>
+        <a class="cta" href="#contact">Explore
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer" id="contact">
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="f-brand">
+        <div class="mark">KERN°</div>
+        <p>An independent design practice working across identity, editorial and interface. Zürich — Tokyo, since 2016.</p>
+      </div>
+
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#philosophy">Studio</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#contact">About</a></li>
+          <li><a href="#contact">Careers</a></li>
+          <li><a href="#contact">Press</a></li>
+          <li><a href="#contact">Legal</a></li>
+        </ul>
+      </div>
+
+      <div class="f-contact">
+        <h4>Contact</h4>
+        <ul>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10.5c0 5.5-8 12-8 12s-8-6.5-8-12a8 8 0 1116 0z"/><circle cx="12" cy="10.5" r="2.8"/></svg>
+            <span>Rennweg 44<br>8001 Zürich, CH</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/></svg>
+            <span>studio@kern.example</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h3l1.6 4-2 1.4a12 12 0 006 6l1.4-2 4 1.6v3a2 2 0 01-2.2 2A16.5 16.5 0 014.5 5.7 2 2 0 016.5 3.5z"/></svg>
+            <span>+41 44 000 00 00</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="f-bottom">
+      <span>© 2026 KERN° — All rights reserved</span>
+      <span>Zürich 47.3769° N / 8.5417° E</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  document.documentElement.classList.add('js');
+
+  /* ---- In-page anchor navigation: scroll mượt bằng JS tự tween ----
+     Không dùng CSS scroll-behavior:smooth toàn cục vì nó làm mọi
+     scrollIntoView (và tool tự động hoá) mất chính xác toạ độ.
+     Native smooth-scroll bị huỷ khi khởi động từ vị trí sâu, nên ta
+     tự tween bằng setTimeout: không phụ thuộc rAF/native, và nhường
+     quyền cuộn nếu người dùng hoặc tool khác can thiệp. */
+  function smoothScrollTo(targetY) {
+    var maxTop = (document.scrollingElement.scrollHeight || 0) - (window.innerHeight || 0);
+    targetY = Math.max(0, Math.min(targetY, maxTop));
+    var startY = window.scrollY || 0;
+    var dy = targetY - startY;
+    if (Math.abs(dy) < 2) return;
+    var canceled = false, t0 = null, lastY = startY;
+    function cancel() { canceled = true; }
+    window.addEventListener('wheel', cancel, { passive: true });
+    window.addEventListener('touchstart', cancel, { passive: true });
+    var DUR = 700; // khớp nhịp --ease 700ms của hệ
+    function step() {
+      if (canceled) return;
+      var now = performance.now();
+      if (!t0) t0 = now;
+      var p = Math.min(1, (now - t0) / DUR);
+      // ease-in-out cubic, nhịp tương đương cubic-bezier(0.77, 0, 0.175, 1)
+      var eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      var y = Math.round(startY + dy * eased);
+      // nếu ai khác (người dùng/tool) đã cuộn lệch khỏi vị trí ý định của
+      // bước TRƯỚC thì nhường quyền và dừng (so với lastY, không so với y)
+      if (Math.abs((window.scrollY || 0) - lastY) > 60) { canceled = true; }
+      lastY = y;
+      window.scrollTo(0, y);
+      if (p < 1 && !canceled) {
+        setTimeout(step, 16);
+      } else {
+        window.removeEventListener('wheel', cancel, { passive: true });
+        window.removeEventListener('touchstart', cancel, { passive: true });
+      }
+    }
+    setTimeout(step, 0);
+  }
+  document.querySelectorAll('a[href="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); });
+  });
+  document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); smoothScrollTo(target.getBoundingClientRect().top + (window.scrollY || 0)); }
+    });
+  });
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Scroll reveal (clip-path cho shot, fade+lift cho block) ----
+     Dùng kiểm tra theo scroll làm nguồn chính: IntersectionObserver có thể bị
+     throttle trong webview/tab nền, còn rect check luôn đúng. IO vẫn được
+     dùng như lớp tăng tốc. */
+  var targets = Array.prototype.slice.call(document.querySelectorAll('.shot, .reveal'));
+
+  function reveal(el) { el.classList.add('in'); }
+
+  function revealAll() {
+    for (var i = 0; i < targets.length; i++) reveal(targets[i]);
+  }
+
+  function check() {
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    for (var i = 0; i < targets.length; i++) {
+      var el = targets[i];
+      if (el.classList.contains('in')) continue;
+      var r = el.getBoundingClientRect();
+      if (r.top < vh * 0.9 && r.bottom > 0) reveal(el);
+    }
+  }
+
+  if (reduce) {
+    revealAll();
+  } else {
+    /* throttle theo thời gian thay vì requestAnimationFrame:
+       rAF chỉ chạy khi trình duyệt render frame, nên trong tab nền/webview
+       không vẽ frame thì hiệu ứng reveal sẽ không bao giờ chạy */
+    var lastCheck = 0;
+    function onScroll() {
+      var now = Date.now();
+      if (now - lastCheck < 50) return;
+      lastCheck = now;
+      check();
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    window.addEventListener('load', onScroll);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(onScroll);
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { reveal(entry.target); io.unobserve(entry.target); }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.15 });
+      for (var j = 0; j < targets.length; j++) io.observe(targets[j]);
+    }
+
+    check();
+    setTimeout(check, 400);
+  }
+
+  /* ---- Stagger the pillars and service cards ---- */
+  var groups = document.querySelectorAll('.pillars, .cards');
+  for (var g = 0; g < groups.length; g++) {
+    (function (group) {
+      var kids = group.children;
+      for (var k = 0; k < kids.length; k++) {
+        kids[k].style.transitionDelay = (k * 90) + 'ms';
+      }
+    })(groups[g]);
+  }
+})();
+</script>
+</body>
+</html>

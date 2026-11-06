@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OTHERLIGHT — Record Label</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#0A0C0E; --g2:#101317; --ink:#EDE7DC; --ink2:#9EA5A8; --mut:#6C7378;
+  --amber:#E8913C; --teal:#2E6B72; --hair:rgba(237,231,220,.13);
+  --disp:'Syne',sans-serif; --sans:'Sora',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.lbl{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+.lbl .d{color:var(--amber)}
+.mono-num{font-variant-numeric:tabular-nums}
+
+/* ---------- NAV ---------- */
+nav{position:fixed;inset:0 0 auto 0;height:58px;z-index:60;display:flex;align-items:center;gap:26px;
+  padding:0 clamp(18px,3.4vw,44px);background:rgba(10,12,14,.72);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--hair)}
+.wordmark{font-family:var(--disp);font-weight:800;font-size:15px;letter-spacing:-.02em;white-space:nowrap}
+.wordmark .p{color:var(--amber)}
+nav .links{display:flex;gap:22px;margin-left:auto}
+nav .links a{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);transition:color .2s}
+nav .links a:hover{color:var(--amber)}
+.pill{font-family:var(--sans);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink);
+  border:1px solid var(--hair);border-radius:99px;padding:9px 16px;background:transparent;cursor:pointer;transition:border-color .2s,color .2s}
+.pill:hover{border-color:var(--amber);color:var(--amber)}
+@media(max-width:760px){nav .links{display:none}}
+
+/* ---------- HERO / PORTAL ---------- */
+#portal{height:256vh;position:relative}
+#stage{position:sticky;top:0;height:100vh;overflow:hidden;isolation:isolate}
+.bleed{position:absolute;inset:0;z-index:0}
+.bleed svg{width:100%;height:100%;object-fit:cover}
+#imgscale{position:absolute;inset:0;will-change:transform}
+#duo{position:absolute;inset:0;z-index:1;opacity:0;mix-blend-mode:overlay;
+  background:linear-gradient(115deg,var(--amber) 0%,transparent 42%,transparent 58%,var(--teal) 100%)}
+#veil{position:absolute;inset:0;z-index:2;background:radial-gradient(120% 90% at 50% 46%,transparent 42%,rgba(10,12,14,.78) 100%)}
+.panel{position:absolute;top:0;height:100%;width:52%;z-index:4;background:var(--ground);will-change:transform}
+#pL{left:-2%;border-right:1px solid rgba(237,231,220,.05)}
+#pR{right:-2%;border-left:1px solid rgba(237,231,220,.05)}
+/* panel texture: vertical hairline field */
+.panel::after{content:"";position:absolute;inset:0;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 79px,var(--hair) 79px 80px);opacity:.35}
+.ptag{position:absolute;z-index:8;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--mut)}
+#dotL{position:absolute;z-index:5;top:calc(50% - 4px);left:calc(50% - 4px);width:8px;height:8px;border-radius:50%;
+  background:var(--amber);box-shadow:0 0 14px 2px rgba(232,145,60,.55);will-change:transform}
+#dotR{position:absolute;z-index:5;top:calc(50% - 4px);left:calc(50% - 4px);width:8px;height:8px;border-radius:50%;
+  background:var(--teal);box-shadow:0 0 14px 2px rgba(46,107,114,.6);will-change:transform}
+#ptitle{position:absolute;z-index:6;inset:0;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;transform-origin:50% 50%;will-change:transform,letter-spacing}
+#ptitle h1{font-family:var(--disp);font-weight:800;font-size:clamp(52px,11vw,168px);line-height:.92;
+  letter-spacing:-.03em;color:var(--ink);display:flex;white-space:nowrap}
+#ptitle h1 .l,#ptitle h1 .r{display:block;will-change:transform}
+#ptitle h1 .r{color:var(--ink)}
+#ptitle h1 .l{padding-right:.02em}
+.pmeta{position:absolute;z-index:7;left:0;right:0;display:flex;justify-content:space-between;
+  padding:0 clamp(18px,3.4vw,44px);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--mut)}
+.pmeta.top{top:76px}.pmeta.bot{bottom:26px}
+.pmeta b{font-weight:500;color:var(--ink2)}
+#scrollhint{position:absolute;z-index:7;left:50%;bottom:22px;transform:translateX(-50%);
+  font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+#scrollhint i{display:block;width:1px;height:26px;background:var(--hair);margin:8px auto 0;position:relative;overflow:hidden}
+#scrollhint i::after{content:"";position:absolute;left:0;top:-8px;width:1px;height:8px;background:var(--amber);
+  animation:drip 2.2s linear infinite}
+@keyframes drip{to{top:26px}}
+@media (prefers-reduced-motion:reduce){#scrollhint i::after{animation:none}}
+
+/* ---------- STATEMENT ---------- */
+#stmt{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;
+  padding:0 clamp(18px,6vw,90px)}
+#stmt .wrap{max-width:860px;position:relative;z-index:2}
+#stmt .lbl{display:block;margin-bottom:26px}
+#stmt h2{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3.6vw,52px);line-height:1.14;
+  letter-spacing:-.025em;max-width:22ch}
+#stmt h2 em{font-style:normal;color:var(--amber)}
+#idx{position:absolute;right:clamp(60px,10vw,160px);top:50%;transform:translateY(-46%);
+  font-family:var(--disp);font-weight:800;font-size:clamp(120px,22vw,320px);line-height:1;
+  color:transparent;-webkit-text-stroke:1px rgba(237,231,220,.22);user-select:none}
+#floatimg{position:absolute;right:-120px;top:16%;width:min(380px,32vw);aspect-ratio:1;border-radius:50%;
+  opacity:.5;z-index:1;will-change:transform;overflow:hidden}
+#floatimg svg{width:100%;height:100%}
+
+/* reveal-once rules only when motion is OK and JS is live */
+.js .rv{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+
+/* ---------- RELEASES ---------- */
+#releases{padding:clamp(90px,14vh,150px) clamp(18px,6vw,90px);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,90px);align-items:center}
+#releases h2{font-family:var(--disp);font-weight:700;font-size:clamp(30px,4.2vw,58px);letter-spacing:-.025em;line-height:1.05}
+#releases .lede{color:var(--ink2);max-width:44ch;margin:22px 0 30px;font-size:15px}
+.btnrow{display:flex;gap:14px;flex-wrap:wrap}
+.btn{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:13px 22px;border:1px solid var(--hair);
+  background:transparent;color:var(--ink);cursor:pointer;border-radius:2px;transition:.2s}
+.btn:hover{border-color:var(--amber);color:var(--amber)}
+.btn.solid{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.btn.solid:hover{background:var(--amber);border-color:var(--amber);color:var(--ground)}
+#deckzone{display:flex;flex-direction:column;align-items:center;gap:18px}
+#deck{position:relative;width:min(430px,82vw);aspect-ratio:1;outline:none;touch-action:pan-y;cursor:grab}
+#deck:focus-visible{outline:1px solid var(--amber);outline-offset:6px}
+#deck.grabbing{cursor:grabbing}
+.card{position:absolute;inset:0;background:var(--g2);border:1px solid var(--hair);border-radius:6px;
+  overflow:hidden;transform-origin:50% 120%;will-change:transform;user-select:none}
+.card .art{position:absolute;inset:0}
+.card .art svg{width:100%;height:100%}
+.card .cinfo{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;display:flex;
+  justify-content:space-between;align-items:baseline;gap:10px;
+  background:linear-gradient(to top,rgba(10,12,14,.85),transparent)}
+.card .cinfo .t{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:-.02em}
+.card .cinfo .c{font-size:10px;letter-spacing:.12em;color:var(--mut);white-space:nowrap}
+#deckhint{font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--mut)}
+#deckdots{display:flex;gap:8px}
+#deckdots i{width:6px;height:6px;border-radius:50%;background:var(--hair);transition:background .2s,transform .2s}
+#deckdots i.on{background:var(--amber);transform:scale(1.25)}
+@media(max-width:900px){#releases{grid-template-columns:1fr;gap:56px}#deckzone{order:-1}}
+
+/* ---------- ROSTER ---------- */
+#roster{padding:0 clamp(18px,6vw,90px) clamp(80px,12vh,130px)}
+#roster .lbl{display:block;margin-bottom:14px}
+.rrow{display:grid;grid-template-columns:110px 1fr auto;gap:18px;align-items:baseline;
+  border-top:1px solid var(--hair);padding:26px 0;transition:padding .25s}
+.rrow:last-child{border-bottom:1px solid var(--hair)}
+.rrow .tag{color:var(--teal)}
+.rrow h3{font-family:var(--disp);font-weight:700;font-size:clamp(20px,2.6vw,34px);letter-spacing:-.025em}
+.rrow .cnt{font-size:12px;color:var(--mut);letter-spacing:.08em;text-align:right}
+.rrow:hover{padding-left:12px}
+.rrow:hover h3{color:var(--amber)}
+
+/* ---------- DATES ---------- */
+#dates{padding:clamp(70px,10vh,110px) clamp(18px,6vw,90px)}
+#dates .lbl{display:block;margin-bottom:30px}
+table{width:100%;border-collapse:collapse}
+thead th{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:500;
+  text-align:left;padding:0 12px 12px 0;border-bottom:1px solid var(--hair)}
+thead th:last-child,tbody td:last-child{text-align:right}
+tbody td{padding:18px 12px 18px 0;border-bottom:1px solid var(--hair);font-size:13.5px;color:var(--ink2);vertical-align:baseline}
+tbody td.city{font-family:var(--disp);font-weight:700;font-size:clamp(17px,2vw,22px);letter-spacing:-.02em;color:var(--ink)}
+tbody td .d{color:var(--amber);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+@media(max-width:640px){
+  table,thead,tbody,tr,td{display:block}
+  thead{display:none}
+  tbody tr{border-bottom:1px solid var(--hair);padding:18px 0;display:grid;grid-template-columns:1fr auto;gap:4px 12px}
+  tbody td{border:none;padding:0}
+  tbody td.city{grid-column:1/3}
+  tbody td.venue{grid-column:1/2}
+  tbody td.tick{grid-column:2/3;grid-row:2}
+  tbody td.date{grid-column:2/3;grid-row:1;text-align:right}
+}
+
+/* ---------- CLOSE ---------- */
+#close{padding:clamp(90px,14vh,150px) clamp(18px,6vw,90px) 0}
+#close .in{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap}
+#close h2{font-family:var(--disp);font-weight:700;font-size:clamp(26px,3.4vw,46px);letter-spacing:-.025em;max-width:18ch}
+#close .fine{color:var(--mut);font-size:12px;margin-top:14px}
+footer{margin-top:clamp(60px,9vh,100px);border-top:1px solid var(--hair);
+  padding:20px clamp(18px,6vw,90px);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--mut)}
+#bigmark{overflow:hidden;height:clamp(90px,17vw,240px);margin-top:clamp(50px,8vh,90px)}
+#bigmark .bm{font-family:var(--disp);font-weight:800;letter-spacing:-.035em;line-height:.8;
+  font-size:clamp(110px,21.5vw,420px);white-space:nowrap;color:var(--ink);
+  transform:translateY(14%)}
+#bigmark .p{color:var(--amber)}
+</style>
+</head>
+<body>
+
+<!-- shared hero artwork (full-bleed) -->
+<svg width="0" height="0" style="position:absolute"><defs>
+<radialGradient id="gA" cx="30%" cy="26%" r="80%">
+  <stop offset="0%" stop-color="#5A3A22"/><stop offset="34%" stop-color="#2A2018"/>
+  <stop offset="70%" stop-color="#14181B"/><stop offset="100%" stop-color="#0A0C0E"/>
+</radialGradient>
+<radialGradient id="gB" cx="72%" cy="70%" r="70%">
+  <stop offset="0%" stop-color="#1E3A3E"/><stop offset="55%" stop-color="#121A1D"/><stop offset="100%" stop-color="#0A0C0E"/>
+</radialGradient>
+<linearGradient id="gC" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0%" stop-color="#E8913C" stop-opacity=".9"/><stop offset="100%" stop-color="#8A4A1C" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="gT" x1="1" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#2E6B72" stop-opacity=".9"/><stop offset="100%" stop-color="#14343A" stop-opacity="0"/>
+</linearGradient>
+<filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+  <feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope="0.06"/></feComponentTransfer>
+  <feComposite operator="over" in2="SourceGraphic"/></filter>
+</defs></svg>
+
+<nav>
+  <a class="wordmark" href="#top">OTHERLIGHT<span class="p">.</span></a>
+  <div class="links">
+    <a href="#releases">Catalogue</a>
+    <a href="#roster">Artists</a>
+    <a href="#dates">Dates</a>
+    <a href="#close">Contact</a>
+  </div>
+  <button class="pill" onclick="location.hash='#close'">Demo&nbsp;reel&nbsp;’26</button>
+</nav>
+
+<!-- ================= PORTAL HERO ================= -->
+<section id="portal">
+  <div id="stage">
+    <div class="bleed">
+      <!-- original hero artwork: stage light / console silhouette -->
+      <div id="imgscale">
+      <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" role="img" aria-label="Underlit stage">
+        <rect width="1600" height="1000" fill="#0A0C0E"/>
+        <ellipse cx="520" cy="240" rx="640" ry="420" fill="url(#gA)"/>
+        <ellipse cx="1180" cy="780" rx="700" ry="520" fill="url(#gB)"/>
+        <g filter="url(#grain)">
+          <rect width="1600" height="1000" fill="transparent"/>
+        </g>
+        <!-- beam -->
+        <path d="M520 60 L360 1000 L760 1000 Z" fill="url(#gC)" opacity=".28"/>
+        <path d="M1180 320 L960 1000 L1420 1000 Z" fill="url(#gT)" opacity=".22"/>
+        <!-- silhouettes: mic stand figure + console -->
+        <g fill="#07090B">
+          <circle cx="524" cy="336" r="30"/>
+          <path d="M524 366 c-44 8 -64 46 -66 96 l-8 330 c0 26 22 40 44 40 l60 0 c22 0 44 -14 44 -40 l-8 -330 c-2 -50 -22 -88 -66 -96 z"/>
+          <rect x="1008" y="700" width="420" height="26" rx="6"/>
+          <rect x="1040" y="726" width="24" height="140"/>
+          <rect x="1384" y="726" width="24" height="140"/>
+          <rect x="1064" y="676" width="308" height="24" rx="10"/>
+        </g>
+        <!-- keyboard slits picking up accents (kept as lines) -->
+        <g stroke="rgba(232,145,60,.5)" stroke-width="2">
+          <line x1="1096" y1="688" x2="1120" y2="688"/><line x1="1140" y1="688" x2="1164" y2="688"/><line x1="1184" y1="688" x2="1208" y2="688"/>
+        </g>
+        <g stroke="rgba(46,107,114,.55)" stroke-width="2">
+          <line x1="1240" y1="688" x2="1264" y2="688"/><line x1="1288" y1="688" x2="1312" y2="688"/>
+        </g>
+        <!-- stagefront hairline -->
+        <line x1="0" y1="948" x2="1600" y2="948" stroke="rgba(237,231,220,.1)"/>
+      </svg>
+      </div>
+      <div id="duo"></div>
+      <div id="veil"></div>
+    </div>
+
+    <div class="panel" id="pL"></div>
+    <div class="panel" id="pR"></div>
+    <div id="dotL"></div>
+    <div id="dotR"></div>
+
+    <div id="ptitle"><h1>
+      <span class="l" id="wL">OTHER</span><span class="r" id="wR">LIGHT</span>
+    </h1></div>
+
+    <div class="pmeta top"><b>Est. 2019</b><span>Independent record label</span><b>Loc. 14°N</b></div>
+    <div class="pmeta bot"><span>Catalogue&nbsp;<span class="mono-num">041</span>–<span class="mono-num">047</span></span><b>Scroll to open</b><span>¶ Two rooms, one door</span></div>
+
+    <div id="scrollhint">Open<i></i></div>
+  </div>
+</section>
+
+<!-- ================= STATEMENT ================= -->
+<section id="stmt">
+  <div id="floatimg" aria-hidden="true">
+    <svg viewBox="0 0 400 400">
+      <defs><clipPath id="ci"><circle cx="200" cy="200" r="200"/></clipPath></defs>
+      <g clip-path="url(#ci)">
+        <rect width="400" height="400" fill="#101317"/>
+        <ellipse cx="150" cy="120" rx="240" ry="180" fill="url(#gA)" opacity=".8"/>
+        <ellipse cx="300" cy="320" rx="200" ry="160" fill="url(#gB)" opacity=".7"/>
+        <circle cx="150" cy="140" r="56" fill="#E8913C" opacity=".55"/>
+        <path d="M40 330 c90 -60 240 -60 330 10" stroke="rgba(46,107,114,.9)" stroke-width="2" fill="none"/>
+      </g>
+    </svg>
+  </div>
+  <div class="wrap">
+    <span class="lbl rv">Manifesto <span class="d">·</span> 02</span>
+    <h2 class="rv">We press records for the <em>long dark</em> — music meant for late rooms, low light, and speakers that tell the truth.</h2>
+    <div id="idx" aria-hidden="true">02</div>
+  </div>
+</section>
+
+<!-- ================= RELEASES / DECK ================= -->
+<section id="releases">
+  <div>
+    <span class="lbl rv">Catalogue <span class="d">·</span> 03</span>
+    <h2 class="rv" style="margin-top:18px">The current<br>run of sleeves</h2>
+    <p class="lede rv">Seven releases in the active catalogue, OL&nbsp;041 through OL&nbsp;047 — pressed between October&nbsp;2025 and October&nbsp;2026. Throw a sleeve aside to see the next.</p>
+    <div class="btnrow rv">
+      <button class="btn solid" id="viewAll">View full catalogue</button>
+      <button class="btn" id="followBtn">Follow new pressings</button>
+    </div>
+  </div>
+  <div id="deckzone">
+    <div id="deck" tabindex="0" role="listbox" aria-label="Release sleeves, arrow keys to browse"></div>
+    <div id="deckhint">Throw a card · ← → keys work too</div>
+    <div id="deckdots" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- ================= ROSTER ================= -->
+<section id="roster">
+  <span class="lbl rv">Artists <span class="d">·</span> 04</span>
+  <div style="margin-top:26px">
+    <div class="rrow rv"><span class="lbl tag">Ambient</span><h3>Halve Moon Theory</h3><span class="cnt mono-num">3 releases</span></div>
+    <div class="rrow rv"><span class="lbl tag">Post-club</span><h3>Cinder Ethics</h3><span class="cnt mono-num">2 releases</span></div>
+    <div class="rrow rv"><span class="lbl tag">Drone</span><h3>Vantu Hollow</h3><span class="cnt mono-num">1 release</span></div>
+    <div class="rrow rv"><span class="lbl tag">Jazz-flecked electronics</span><h3>The Mara Signal</h3><span class="cnt mono-num">1 release</span></div>
+  </div>
+</section>
+
+<!-- ================= DATES ================= -->
+<section id="dates">
+  <span class="lbl rv">Live dates <span class="d">·</span> 05</span>
+  <table style="margin-top:30px">
+    <thead><tr><th>Date</th><th>City</th><th>Venue</th><th>Artist</th><th class="tick">Tickets</th></tr></thead>
+    <tbody>
+      <tr><td class="date"><span class="d">Nov 14</span> <span class="mono-num">2026</span></td><td class="city">Rotterdam</td><td class="venue">WORM</td><td>Cinder Ethics</td><td class="tick"><a href="#close" class="lbl">Tickets <span class="d">→</span></a></td></tr>
+      <tr><td class="date"><span class="d">Nov 27</span> <span class="mono-num">2026</span></td><td class="city">Berlin</td><td class="venue"> silent green</td><td>Halve Moon Theory</td><td class="tick"><a href="#close" class="lbl">Tickets <span class="d">→</span></a></td></tr>
+      <tr><td class="date"><span class="d">Dec 09</span> <span class="mono-num">2026</span></td><td class="city">London</td><td class="venue">Café Oto</td><td>The Mara Signal</td><td class="tick"><a href="#close" class="lbl">Tickets <span class="d">→</span></a></td></tr>
+      <tr><td class="date"><span class="d">Jan 22</span> <span class="mono-num">2027</span></td><td class="city">Lisbon</td><td class="venue">Out Fest</td><td>Vantu Hollow</td><td class="tick"><a href="#close" class="lbl">Tickets <span class="d">→</span></a></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ================= CLOSE ================= -->
+<section id="close">
+  <div class="in">
+    <div>
+      <h2 class="rv">Send us things that only make sense at 2am.</h2>
+      <p class="fine">Demos: two songs, no press kit. We answer everything.</p>
+    </div>
+    <div class="btnrow">
+      <button class="btn solid" id="mailBtn">hello@otherlight.example</button>
+      <button class="btn" id="igBtn">Instagram</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© <span class="mono-num">2026</span> Otherlight Records</span>
+  <span>Catalogue <span class="mono-num">041–047</span></span>
+  <span>Rotterdam · Berlin · London</span>
+</footer>
+
+<div id="bigmark"><div class="bm">OTHERLIGHT<span class="p">.</span></div></div>
+
+<script>
+document.documentElement.classList.add('js');
+(function(){
+"use strict";
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var clamp = function(v,a,b){return Math.max(a,Math.min(b,v));};
+
+/* ---------- catalogue data (internally consistent) ---------- */
+var CAT = [
+  {code:'OL 041', title:'Longwave Chapel',    artist:'Halve Moon Theory', date:'Oct 2025', dur:'41:12', seeds:['amber','deep']},
+  {code:'OL 042', title:'Nightstall',         artist:'Cinder Ethics',     date:'Jan 2026', dur:'38:44', seeds:['rust','grid']},
+  {code:'OL 043', title:'Vantablack Studies', artist:'Vantu Hollow',      date:'Mar 2026', dur:'52:03', seeds:['void','arc']},
+  {code:'OL 044', title:'Mara Transmissions', artist:'The Mara Signal',   date:'May 2026', dur:'44:58', seeds:['teal','wave']},
+  {code:'OL 045', title:'Second Raven',       artist:'Halve Moon Theory', date:'Jul 2026', dur:'39:21', seeds:['bone','arc']},
+  {code:'OL 046', title:'Ash Registry',       artist:'Cinder Ethics',     date:'Sep 2026', dur:'35:07', seeds:['rust','wave']},
+  {code:'OL 047', title:'Hollow Chorus',      artist:'Vantu Hollow',      date:'Oct 2026', dur:'47:36', seeds:['void','grid']}
+];
+var ART_SEED = 7;
+function rnd(){ ART_SEED = (ART_SEED*16807)%2147483647; return ART_SEED/2147483647; }
+/* generative sleeve art from palette only */
+function art(seeds){
+  var a = seeds[0]==='amber'?'#E8913C':seeds[0]==='teal'?'#2E6B72':seeds[0]==='rust'?'#7A4326':seeds[0]==='bone'?'#EDE7DC':'#1A2226';
+  var b = seeds[1]==='grid'?'grid':seeds[1]==='wave'?'wave':seeds[1]==='arc'?'arc':'deep';
+  var s = '<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice"><rect width="400" height="400" fill="#101317"/>';
+  s += '<ellipse cx="'+(120+rnd()*160)+'" cy="'+(90+rnd()*120)+'" rx="'+(200+rnd()*120)+'" ry="'+(150+rnd()*90)+'" fill="url(#gA)" opacity=".5"/>';
+  s += '<ellipse cx="'+(200+rnd()*160)+'" cy="'+(260+rnd()*120)+'" rx="260" ry="190" fill="url(#gB)" opacity=".45"/>';
+  if(b==='grid'){ for(var i=0;i<8;i++){ var y=40+i*44; s+='<line x1="20" y1="'+y+'" x2="'+(90+rnd()*300)+'" y2="'+y+'" stroke="'+a+'" stroke-opacity=".5" stroke-width="1"/>'; } }
+  if(b==='wave'){ var d='M20 '; for(var j=0;j<=8;j++){ d+=(j?'L':'')+(20+j*45)+' '+(120+Math.sin(j*1.1+rnd()*2)*70+rnd()*24)+' '; } s+='<path d="'+d+'" fill="none" stroke="'+a+'" stroke-opacity=".75" stroke-width="1.5"/>'; }
+  if(b==='arc'){ s+='<circle cx="200" cy="200" r="'+(90+rnd()*70)+'" fill="none" stroke="'+a+'" stroke-opacity=".55" stroke-width="1"/>'; s+='<circle cx="200" cy="200" r="'+(40+rnd()*40)+'" fill="none" stroke="'+a+'" stroke-opacity=".3"/>'; }
+  s += '<rect x="24" y="24" width="'+(8+rnd()*150)+'" height="1" fill="'+a+'" fill-opacity=".8"/>';
+  return s+'</svg>';
+}
+
+/* ---------- PORTAL scroll driver ---------- */
+var portal=document.getElementById('portal'), stage=document.getElementById('stage');
+var imgscale=document.getElementById('imgscale'), duo=document.getElementById('duo');
+var pL=document.getElementById('pL'), pR=document.getElementById('pR');
+var ptitle=document.getElementById('ptitle'), wL=document.getElementById('wL'), wR=document.getElementById('wR');
+var dotL=document.getElementById('dotL'), dotR=document.getElementById('dotR');
+var hint=document.getElementById('scrollhint');
+var portalH=1;
+function measure(){ portalH = portal.offsetHeight - innerHeight; }
+addEventListener('resize',measure); measure();
+
+function portalFrame(){
+  var p = clamp(-portal.getBoundingClientRect().top / portalH, 0, 1); /* 0..1 through hero */
+  var e = p<.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; /* easeInOutQuad */
+
+  /* panels part outward: they start meeting at centre, travel past own width */
+  var out = e * 118; /* vw-ish percent of panel width */
+  pL.style.transform = 'translateX(' + (-out) + '%)';
+  pR.style.transform = 'translateX(' + ( out) + '%)';
+
+  /* image settles from overscale 1.18 -> 1 */
+  var sc = 1.18 - .18*e;
+  imgscale.style.transform = 'scale(' + sc.toFixed(4) + ')';
+
+  /* duotone rises from 0 -> .3 */
+  duo.style.opacity = (e*.3).toFixed(3);
+
+  /* wordmark: grows while tracking tightens; halves travel apart ~38% */
+  var tSc  = 1 + .16*e;
+  var trk  = -.03 - .052*e;          /* em: -0.03 -> -0.082 (tightens) */
+  var half = 38*e;                    /* percent of own width */
+  ptitle.style.transform = 'scale(' + tSc.toFixed(4) + ')';
+  ptitle.style.letterSpacing = trk.toFixed(4) + 'em';
+  wL.style.transform = 'translateX(' + (-half) + '%)';
+  wR.style.transform = 'translateX(' + ( half) + '%)';
+
+  /* dots travel to opposite corners */
+  var dx = e*46, dy = e*40;
+  dotL.style.transform = 'translate(' + (-dx) + 'vw,' + (-dy) + 'vh)';
+  dotR.style.transform = 'translate(' + ( dx) + 'vw,' + (-dy) + 'vh)';
+
+  hint.style.opacity = p<.06 ? 1 : clamp(1-(p-.06)/.1,0,1);
+}
+if(!reduce){ addEventListener('scroll', function(){ requestAnimationFrame(portalFrame); }, {passive:true}); }
+else { /* leave hero closed-open hybrid: fully open state */
+  pL.style.transform='translateX(-118%)'; pR.style.transform='translateX(118%)';
+  duo.style.opacity='.3'; }
+portalFrame();
+
+/* statement numeral + float image drift (scroll-bound, subtle) */
+var stmt=document.getElementById('stmt'), idx=document.getElementById('idx'), fim=document.getElementById('floatimg');
+function stmtFrame(){
+  var r = stmt.getBoundingClientRect();
+  var p = clamp(1 - (r.top + r.height*.4)/innerHeight, 0, 1);
+  fim.style.transform = 'translateY(' + (-p*120).toFixed(1) + 'px) rotate(' + (p*26).toFixed(2) + 'deg)';
+}
+if(!reduce){ addEventListener('scroll', function(){ requestAnimationFrame(stmtFrame); }, {passive:true}); stmtFrame(); }
+
+/* ---------- entry reveals fire once ---------- */
+var io = ('IntersectionObserver' in window) && !reduce ? new IntersectionObserver(function(es){
+  es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+},{threshold:.18}) : null;
+document.querySelectorAll('.rv').forEach(function(el){ io ? io.observe(el) : el.classList.add('in'); });
+
+/* ---------- throwable deck ---------- */
+var deck=document.getElementById('deck'), dots=document.getElementById('deckdots');
+var order = CAT.map(function(_,i){return i;}); /* order[0] = top card index */
+var top = 0, busy=false;
+
+function buildDeck(){
+  deck.innerHTML=''; dots.innerHTML='';
+  order.forEach(function(ci, pos){
+    var c = CAT[ci];
+    var el = document.createElement('div'); el.className='card'; el.setAttribute('role','option');
+    el.style.zIndex = 100-pos;
+    var depth = pos - top; /* 0 = top of stack */
+    var rot = depth===0?0:(depth%2?1:-1)*(2.2+1.4*Math.abs(depth))*Math.sign(depth||1);
+    el.style.transform = 'translate(' + (depth%2?depth*9:-depth*7) + 'px,' + (depth*14) + 'px) rotate(' + rot + 'deg) scale(' + (1-depth*.045) + ')';
+    el.innerHTML = '<div class="art">'+art(c.seeds)+'</div><div class="cinfo"><span class="t">'+c.title+'</span><span class="c">'+c.code+' · '+c.date+'</span></div>';
+    deck.appendChild(el);
+  });
+  CAT.forEach(function(_,i){ var d=document.createElement('i'); if(i===order[top])d.className='on'; dots.appendChild(d); });
+}
+function restack(anim){
+  if(anim&&busy)return; 
+  var cards=deck.children;
+  order.forEach(function(ci,pos){
+    var depth=pos-top; if(depth>5){return;}
+    var el=cards[pos];
+    var rot=depth===0?0:(depth%2?1:-1)*(2.2+1.4*Math.abs(depth))*Math.sign(depth||1);
+    if(anim&&!reduce) el.style.transition='transform .38s cubic-bezier(.3,.9,.3,1)';
+    else el.style.transition= reduce ? 'none' : (pos===top? '' : el.style.transition);
+    el.style.zIndex=100-(pos);
+    el.style.transform='translate('+(depth%2?depth*9:-depth*7)+'px,'+(depth*14)+'px) rotate('+rot+'deg) scale('+(1-depth*.045)+')';
+  });
+  [...dots.children].forEach(function(d,i){ d.className = i===order[top] ? 'on':''; });
+  busy=false;
+}
+function throwCard(dir){
+  if(busy) return;
+  var el = deck.children[top]; if(!el) return;
+  busy=true;
+  el.style.transition='transform .5s cubic-bezier(.2,.7,.3,1)';
+  el.style.transform='translateX('+(dir*130)+'%) translateY(-40px) rotate('+(dir*16)+'deg) scale(.96)';
+  var s=el; setTimeout(function(){ s.style.transition='none'; },520);
+  top = (top+1) % order.length;
+  setTimeout(function(){ restack(true); }, 240);
+}
+/* pointer drag */
+var drag=null;
+deck.addEventListener('pointerdown',function(e){
+  if(busy) return;
+  drag={x:e.clientX,y:e.clientY,dx:0};
+  deck.classList.add('grabbing');
+  deck.children[top].style.transition='none';
+  deck.setPointerCapture(e.pointerId);
+});
+deck.addEventListener('pointermove',function(e){
+  if(!drag||busy) return;
+  drag.dx = e.clientX-drag.x; var dy=(e.clientY-drag.y)*.4;
+  var rot = clamp(drag.dx*0.09,-14,14);
+  var lift = Math.min(Math.abs(drag.dx)*.06,10);
+  deck.children[top].style.transform =
+    'translate('+drag.dx+'px,'+(dy-lift)+'px) rotate('+rot+'deg) scale(1.035)';
+});
+function endDrag(e){
+  if(!drag||busy) return; var dx=drag.dx; drag=null; deck.classList.remove('grabbing');
+  var thr = deck.offsetWidth*0.1;
+  if(Math.abs(dx)>thr){ throwCard(dx>0?1:-1); }
+  else restack(true);
+}
+deck.addEventListener('pointerup',endDrag);
+deck.addEventListener('pointercancel',endDrag);
+/* keyboard */
+deck.addEventListener('keydown',function(e){
+  if(e.key==='ArrowLeft'){ e.preventDefault(); throwCard(-1); }
+  if(e.key==='ArrowRight'){ e.preventDefault(); throwCard(1); }
+});
+deck.addEventListener('click',function(e){ if(!drag && !busy){ /* tap top card = advance */ if(e.target.closest('.card') && !e.detail) {} } });
+buildDeck();
+
+/* small wiring (no fake claims) */
+document.getElementById('viewAll').addEventListener('click',function(){
+  this.textContent = 'Catalogue OL 041–047 · 7 releases';
+});
+document.getElementById('followBtn').addEventListener('click',function(){ this.textContent='On the list'; });
+document.getElementById('mailBtn').addEventListener('click',function(){ location.hash='#close'; });
+document.getElementById('igBtn').addEventListener('click',function(){ this.textContent='@otherlight'; });
+})();
+</script>
+</body>
+</html>
